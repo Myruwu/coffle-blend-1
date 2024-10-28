@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Store Owner Dashboard</title>
+</head>
+<body>
+    <h2>Store Owner Dashboard</h2>
+    <button onclick="fetchStoreBalance()">Refresh Balance</button>
+    <div id="storeBalanceDisplay"></div>
+
+    <script>
+        async function fetchStoreBalance() {
+            const response = await fetch('/api/store_balance');
+            const data = await response.json();
+            const balanceDisplay = `
+                <p>Store Owner: ${data.store_owner}</p>
+                <p>Balance: ${data.balance.toFixed(8)} BTC</p>
+                <h4>Payment Log:</h4>
+                <ul>
+                    ${data.payment_log.map(payment => `<li>${payment.message}</li>`).join('')}
+                </ul>
+            `;
+            document.getElementById('storeBalanceDisplay').innerHTML = balanceDisplay;
+        }
+    </script>
+</body>
+</html>
